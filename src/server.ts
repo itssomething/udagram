@@ -38,12 +38,20 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   });
 
   app.get( "/filteredimage", async ( req, res ) => {
+    const regex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
     const url = req.query.image_url;
-    const path = await filterImageFromURL(url);
-    res.sendFile(path);
-    res.on('finish', () => deleteLocalFiles([path]));
-  } );
 
+    if (!url.match(regex)) {
+      return res.send("invalid url");
+    }
+    try {
+      const path = await filterImageFromURL(url);
+      res.sendFile(path);
+      res.on('finish', () => deleteLocalFiles([path]));
+    } catch (error) {
+      return res.send("error when fetching image from url");
+    }
+  } );
 
   // Start the Server
   app.listen( port, () => {
