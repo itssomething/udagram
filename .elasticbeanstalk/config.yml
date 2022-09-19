@@ -1,4 +1,6 @@
 branch-defaults:
+  main:
+    environment: image-filter-starter-code-dev
   master:
     environment: image-filter-starter-code-dev
     group_suffix: null
