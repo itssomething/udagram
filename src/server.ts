@@ -33,19 +33,19 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   // Root Endpoint
   // Displays a simple message to the user
-  app.get("/", async(req, res) => {
+  app.get("/", async(req: express.Request, res: express.Response) => {
     res.send("root endpoint");
   });
 
-  app.get( "/filteredimage", async ( req, res ) => {
-    const regex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-    const url = req.query.image_url;
+  app.get( "/filteredimage", async ( req: express.Request, res: express.Response ) => {
+    const regex: RegExp = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+    const url: string = req.query.image_url as string;
 
     if (!url.match(regex)) {
       return res.send("invalid url");
     }
     try {
-      const path = await filterImageFromURL(url);
+      const path: string = await filterImageFromURL(url);
       res.sendFile(path);
       res.on('finish', () => deleteLocalFiles([path]));
     } catch (error) {
