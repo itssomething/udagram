@@ -49,7 +49,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
       res.sendFile(path);
       res.on('finish', () => deleteLocalFiles([path]));
     } catch (error) {
-      return res.send("error when fetching image from url");
+      return res.send(`error when fetching image from url: ${error}`);
     }
   } );
 
